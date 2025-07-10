@@ -3,6 +3,10 @@ Projects which are gonna help in real life
 
 # Project 1: Sales Forecasting with Linear Regression
 
+"Hi, this is my Sales Forecasting project. The goal was to predict future sales. I started by loading a supermarket dataset into a Pandas DataFrame. Then, I processed the data by converting the date column and calculating the total sales for each day. The key step was creating a 'Days' feature for my model to use.
+I then trained a Linear Regression model using Scikit-learn. Here is the final result: this graph shows the actual sales as blue dots and my model's prediction as the red line.
+As you can see, the model drew a straight line, but the actual sales are all over the place. My conclusion is that linear regression is too simple for this data, and we'd need a more advanced model for better accuracy. Thank you.
+
 📝 About the Project
 
 This project aims to forecast daily supermarket sales using a Linear Regression model. The goal is to analyze historical sales data to predict future revenue trends. The model is built in Python using libraries such as Pandas for data manipulation, Scikit-learn for machine learning, and Matplotlib for visualization.
