@@ -1,0 +1,16 @@
+The table i got after building and training the Linear Regression Model 
+This table is the clean, processed data we fed to our model.
+Date: The calendar date.
+Sales: The sum of all sales for that entire day. For example, on January 1st, 2019, the total revenue was $4745.18.
+Days: This is the simple number our model uses instead of the date. Day 0 is our starting point. Day 1 is the next day, and so on. 
+The model learns the relationship between this number and the Total.
+
+The Graph (Actual vs. Predicted Trend)
+
+This graph tells the story of your model's performance.
+Blue Dots (Actual Sales): Each blue dot represents the actual total sales for a specific day. Notice how they are scattered all over the place—some days sales are high (like the dot near $6000), and other days they are low (like the dot near $2000). This shows that your daily sales have high variability.
+Red Line (Predicted Sales Trend Line): This is your Linear Regression model. A linear model can only draw a single straight line that it thinks "best fits" the data.
+The Problem: Your data points don't follow a straight line, so the model struggles. It draws a line that cuts through the middle of the dots.
+The Trend: The red line is slightly tilted downwards. This means your model concluded that, on average, there is a very slight decreasing trend in sales over this period.
+
+The Conclusion: The most important takeaway is that a simple Linear Regression model is not a good fit for this specific dataset. The actual sales jump up and down far too much for a simple straight line to be an accurate predictor. This is a fantastic finding! In a real-world scenario, this tells you that you need a more advanced forecasting model to capture these complex patterns.
