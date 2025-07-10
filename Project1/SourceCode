@@ -1,0 +1,103 @@
+#PROJECT 1
+
+# Import the pandas library, which is our tool for working with data tables.
+# We give it the shorter name 'pd' as a standard convention.
+import pandas as pd
+
+# This line reads the uploaded CSV file into a pandas DataFrame.
+# A DataFrame is like a smart spreadsheet or table within Python.
+# 'df' is the variable name we are using to store our data table.
+df = pd.read_csv('SuperMarket Analysis.csv')
+
+# This command prints the first 5 rows of your DataFrame.
+# It's a crucial step to quickly check if the data has loaded correctly
+# and to see the names of the columns.
+print("Here's a look at your new dataset:")
+df.head()
+# --- Part 1: Convert the 'Date' column ---
+# We select the 'Date' column and tell pandas to treat it as an actual date,
+# not just text. This is essential for any time-based analysis.
+df['Date'] = pd.to_datetime(df['Date'])
+
+# --- Part 2: Aggregate Sales by Date ---
+# We need to calculate the total sales for each day.
+# .groupby('Date') groups all the rows that have the same date together.
+# ['Sales'] selects the 'Sales' column from each of those groups.
+# .sum() calculates the sum of the 'Sales' for each group (each day).
+# .reset_index() converts the grouped output back into a clean DataFrame.
+daily_sales = df.groupby('Date')['Sales'].sum().reset_index()
+
+# --- Part 3: Create a 'Days' Feature for the Model ---
+# Our linear regression model needs a simple number to work with, not dates.
+# We will create a new column 'Days' that represents the number of days
+# that have passed since the very first day in our dataset.
+# (daily_sales['Date'] - daily_sales['Date'].min()) calculates the time difference.
+# .dt.days extracts just the number of days from that difference.
+daily_sales['Days'] = (daily_sales['Date'] - daily_sales['Date'].min()).dt.days
+
+# --- Part 4: Display the Processed Data ---
+print("Here is our processed data, ready for the model:")
+daily_sales.head()
+# Import the necessary functions from the scikit-learn library.
+# Scikit-learn is the primary library for machine learning in Python.
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# --- Part 1: Define Features (X) and Target (y) ---
+# The feature (X) is the input for the model. It's what we use to make a prediction.
+# We use double brackets [['Days']] because the model expects a 2D array (like a table).
+X = daily_sales[['Days']]
+
+# The target (y) is what we want to predict. In this case, it's the total daily sales.
+y = daily_sales['Sales']
+
+# --- Part 2: Split the Data ---
+# This function shuffles and splits our data into four pieces.
+# X_train, y_train: The data the model will learn from (80% of the original data).
+# X_test, y_test: The data we'll use to evaluate the model (the other 20%).
+# test_size=0.2 means we want 20% of the data for testing.
+# random_state=42 ensures that the split is the same every time we run the code.
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# --- Part 3: Create and Train the Model ---
+# We create an instance of the Linear Regression model. Think of 'model' as our
+# new, untrained student.
+model = LinearRegression()
+
+# The .fit() method is the "learning" or "training" step.
+# We provide it the training data (X_train) and the correct answers (y_train).
+# The model will then learn the mathematical relationship between 'Days' and 'Total'.
+model.fit(X_train, y_train)
+
+print("Model training is complete!")
+# Import our plotting libraries. Matplotlib is for creating the plot,
+# and Seaborn makes the plots look nicer.
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# --- Part 1: Make Predictions ---
+# We use the .predict() method on our trained model.
+# We give it the 'Days' from our test set (X_test), and it will predict
+# the corresponding sales totals. The predictions are stored in y_pred.
+y_pred = model.predict(X_test)
+
+# --- Part 2: Visualize the Results ---
+# plt.figure(figsize=(12, 6)) creates a figure to draw on with a specific size.
+plt.figure(figsize=(12, 7))
+
+# plt.scatter(...) creates a scatter plot (individual dots).
+# We plot the actual 'Days' (X_test) against the actual 'Sales' sales (y_test).
+plt.scatter(X_test, y_test, color='blue', label='Actual Sales')
+
+# plt.plot(...) creates a line plot.
+# We plot the test 'Days' (X_test) against our model's predicted sales (y_pred).
+# This will draw the 'best-fit line' that our model has learned.
+plt.plot(X_test, y_pred, color='red', linewidth=2, label='Predicted Sales (Trend Line)')
+
+# These commands add labels and a title to make our plot understandable.
+plt.title('Supermarket Sales: Actual vs. Predicted Trend')
+plt.xlabel('Days Since Start of Period')
+plt.ylabel('Total Daily Sales')
+plt.legend() # This displays the 'label' for each plot element (e.g., "Actual Sales").
+plt.grid(True) # Adds a grid to the background for easier reading.
+plt.show() # This command displays the final plot.
