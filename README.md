@@ -1,5 +1,5 @@
 # Tamizhan-Skills_Intenrship_Projects
-Projects which are gonna help in real life
+The Projects which is gonna help in real life
 
 # Project 1: Sales Forecasting with Linear Regression
 
